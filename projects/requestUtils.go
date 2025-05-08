@@ -16,6 +16,10 @@ func SaveRequest(reqType string, route string) {
 	var projectName string
 
 	options := GetProjectsOptions()
+	if len(options) == 0 {
+		fmt.Println("No saved environments found!")
+		return
+	}
 
 	if err := huh.NewForm(
 		huh.NewGroup(
@@ -85,6 +89,11 @@ func PerformSavedRequest() {
 	err = json.Unmarshal(data, &project)
 	if err != nil {
 		log.Fatal("Error Unmarshalling JSON", err)
+	}
+
+	if len(project.Requests) == 0 {
+		fmt.Println("No saved request found!")
+		return
 	}
 
 	for index, request := range project.Requests {
